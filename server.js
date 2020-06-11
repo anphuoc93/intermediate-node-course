@@ -32,6 +32,28 @@ app.post("/users", (req, res) => {
   );
 });
 
+// GET ALL
+app.get("/users", (req, res) => {
+  User.find((err, data) => {
+    if (err) {
+      res.json({
+        success: false,
+        message: err
+      });
+    } else if (!data) {
+      res.json({
+        success: false,
+        message: "Not Found"
+      });
+    } else {
+      res.json({
+        success: true,
+        data: data
+      });
+    }
+  });
+});
+
 app
   .route("/users/:id")
   .get((req, res) => {
@@ -85,7 +107,23 @@ app
       }
     );
   })
-  // DELETE
   .delete((req, res) => {
-    // User.findByIdAndDelete()
+    User.findByIdAndDelete(req.params.id, (err, data) => {
+      if (err) {
+        res.json({
+          success: false,
+          message: err
+        });
+      } else if (!data) {
+        res.json({
+          success: false,
+          message: "Not Found"
+        });
+      } else {
+        res.json({
+          success: true,
+          data: data
+        });
+      }
+    });
   });
